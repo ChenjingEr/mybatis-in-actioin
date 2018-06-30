@@ -26,5 +26,6 @@
 	<mappers>
 		<mapper resource="mapper/BookCURDMapper.xml" />
 		<mapper resource="mapper/PublishingCompanyMapper.xml" />
+		<mapper resource="mapper/BookDynamicMapper.xml" />
 	</mappers>
 </configuration>

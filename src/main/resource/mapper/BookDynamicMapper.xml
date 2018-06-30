@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="pro.jing.mybatis.dao.BookDynamicMapper">
+
+	<!-- Book getBookByCondition(); -->
+	<select id="getBookByCondition"
+		resultType="pro.jing.mybatis.bean.Book">
+		SELECT id, book_name bookName, author,
+		price, publish_date publishDate
+		FROM book
+		<where>
+			<if test="bookName != null and bookName != ''">
+				<bind name="bookName" value="'%'+ bookName+'%'" />
+				book_name like #{bookName}
+			</if>
+			<if test="author != null and author != ''">
+				<bind name="author" value="'%'+author+'%'" />
+				and author like #{author}
+			</if>
+			<if test="price != null">
+				and price &lt; #{price}
+			</if>
+			limit 1
+		</where>
+	</select>
+
+	<!-- Book getBookByCondition02(Book book); -->
+	<select id="getBookByCondition02"
+		resultType="pro.jing.mybatis.bean.Book">
+		SELECT id, book_name bookName, author,
+			price, publish_date publishDate
+		FROM book
+		<where>
+			<choose>
+				<when test="bookName != null and bookName != ''">
+					<bind name="bookName" value="'%'+ bookName+'%'" />
+					book_name like #{bookName}
+				</when>
+				<when test="author != null and author != ''">
+					<bind name="author" value="'%'+author+'%'" />
+					author like #{author}
+				</when>
+				<otherwise>
+					price &lt; #{price}
+				 </otherwise>
+			</choose>
+		</where>
+	</select>
+</mapper>
